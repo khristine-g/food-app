@@ -157,7 +157,7 @@ function Register({ onLogin }) {
                                             </li>
                                             <li>
                                                 <NavLink  to={`/login` }>
-                                                            login
+                                                            SignUp
                                                         </NavLink>
                                                 </li>
                                         </ul>
