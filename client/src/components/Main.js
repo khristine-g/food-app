@@ -1,6 +1,6 @@
 import React, { useState  } from 'react'
 
-function Main({foods , user}) {
+function Main({foods , user, updateCart}) {
     const [cartItems, setCartItems] = useState([]);
 
     const calculateTotalPrice = () => {
@@ -8,8 +8,11 @@ function Main({foods , user}) {
       cartItems.forEach((item) => {
         totalPrice += item.price;
       });
+      updateCart(totalPrice)
       return totalPrice;
     };
+
+   
   
     const handleAddToCart = (food) => {
       setCartItems((prevCartItems) => [...prevCartItems, food]);
