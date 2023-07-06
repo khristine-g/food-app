@@ -1,6 +1,73 @@
-import React from 'react'
 
-function Main() {
+import React, { useState  } from 'react'
+function Main({foods , user, updateCart}) {
+    const [cartItems, setCartItems] = useState([]);
+    const calculateTotalPrice = () => {
+      let totalPrice = 0;
+      cartItems.forEach((item) => {
+        totalPrice += item.price;
+      });
+      updateCart(totalPrice)
+      return totalPrice;
+    };
+
+   
+  
+    const handleAddToCart = (food) => {
+      setCartItems((prevCartItems) => [...prevCartItems, food]);
+    };
+    const handleSubmitOrder = () => {
+        // Create the order object
+        const order = {
+          user_id: user.id, // Replace with the actual user ID
+          quantity: cartItems.length,
+          price: calculateTotalPrice(),
+        };
+        // Send a POST request to create the order
+        fetch('/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ order }), // Send the order data as an object
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response or perform any necessary actions
+            console.log(data);
+            // Save individual order items
+            const orderId = data.id; // Assuming the response contains the created order ID
+            const orderItems = cartItems.map((item) => ({
+              order_id: orderId,
+              food_id: item.id,
+              quantity: 1, // You can adjust the quantity as needed
+              price: item.price,
+            }));
+            // Send a POST request to create the order items
+            fetch('/orderitems', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ order_items: orderItems }), // Send the order items data as an object
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // Handle the response or perform any necessary actions
+                console.log(data);
+              })
+              .catch((error) => {
+                // Handle the error
+                console.error(error);
+              });
+          })
+          .catch((error) => {
+            // Handle the error
+            console.error(error);
+          });
+        // Clear the cart items after submitting the order
+        setCartItems([]);
+      };
   return (
    <>
          <div className="hwork">
@@ -34,158 +101,34 @@ function Main() {
                                 <p className="desc">Choose from over 30 craveable toppings to make your perfect Food.
                                     <br/> Don’t love what you ordered? Let us know. We’re all about second chances.</p>
                                 <div className="p_card">
-                               
-                               {/* Populate Food Data */}
-                               
-                               
                                     <div className="row">
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img">
-                                                           <img src="assets/images/pro_img1.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Mexican Pizza</h3>
-                                                            <p className="desc">Our standard “Mexican” is loaded</p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 10.00</div>
-                                                                <a href="#" className="card_btn">Add to cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img"> 
-                                                        <img src="assets/images/pro_img2.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Broadway</h3>
-                                                            <p className="desc">Double Bacon Cheese Burger, Lettuce. </p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 9.89</div>
-                                                                <a href="#" className="card_btn">Add to cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img"> 
-                                                        <img src="assets/images/pro_img3.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Garbage Salad</h3>
-                                                            <p className="desc">Everything includes, tuscan spring mix </p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 4.10</div>
-                                                                <a href="#" className="card_btn">
-                                    Add to cart
-                                  </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img"> 
-                                                        <img src="assets/images/pro_img4.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Cheese Fries</h3>
-                                                            <p className="desc">Our fries are prepared in batches</p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 4.79</div>
-                                                                <a href="#" className="card_btn">Add to cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img"> 
-                                                        <img src="assets/images/pro_img5.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Coca-Cola</h3>
-                                                            <p className="desc">Coca-Cola is the most popular drink</p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 10.00</div>
-                                                                <a href="#" className="card_btn">Add to cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img"> 
-                                                        <img src="assets/images/pro_img2.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Garlic Bread</h3>
-                                                            <p className="desc">Butter, olive oil, garlic, crusty bread</p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 5.00</div>
-                                                                <a href="#" className="card_btn">Add to cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img"> 
-                                                        <img src="assets/images/pro_img3.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Red Sauce Pasta</h3>
-                                                            <p className="desc">Red tomato sauce with mix veggies.</p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 8.00</div>
-                                                                <a href="#" className="card_btn">Add to cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    <div className="card">
-                                                        <div className="C_img">
-                                                           <img src="assets/images/pro_img4.jpg" className="absoImg" alt=""/> </div>
-                                                        <div className="C_desc">
-                                                            <h3 className="title">Schezwan Sandwich</h3>
-                                                            <p className="desc">Spicy vegetables and schezwan sauce</p>
-                                                            <div className="price_block">
-                                                                <div className="price">$ 3.00</div>
-                                                                <a href="#" className="card_btn">Add to cart</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
+                               {/* Populate Food Data */}
+                               {foods.map((food) => (
+            <div key={food.id} className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <ul>
+                <li>
+                  <div className="card">
+                    <div className="C_img">
+                      <img src={`assets/images/${food.image}`} className="absoImg" alt="" />
+                    </div>
+                    <div className="C_desc">
+                      <h3 className="title">{food.name}</h3>
+                      <p className="desc">{food.description}</p>
+                      <div className="price_block">
+                        <div className="price">Ksh {food.price}</div>
+                        <button
+                          onClick={() => handleAddToCart(food)}
+                          className="card_btn"
+                        >
+                          Add to cart
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          ))}
                                     </div>
                                 </div>
                             </div>
@@ -194,9 +137,28 @@ function Main() {
                 </div>
             </div>
         </section>
-
-
-
+{/* add cart form */}
+{cartItems.length > 0 && (
+          <section>
+            <div className="cart_form">
+              <h2 className="title">Cart</h2>
+              <ul>
+                {cartItems.map((item) => (
+                  <li key={item.id}>
+                    <div className="cart_item">
+                      <div className="item_name">{item.name}</div>
+                      <div className="item_price">Ksh {item.price}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="total_price">Total: Ksh {calculateTotalPrice()}</div>
+              <button className="submit_btn" onClick={handleSubmitOrder}>
+                Submit Order
+              </button>
+            </div>
+          </section>
+        )}
         <section>
             <div className="client_say">
                 <div className="main_client">
@@ -234,5 +196,4 @@ function Main() {
    </>
   )
 }
-
 export default Main
