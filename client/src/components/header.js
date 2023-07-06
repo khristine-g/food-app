@@ -25,6 +25,7 @@ function Header({ user, onLogout, cart}) {
                                                     <li>                                                            <NavLink className="trans" to={`/` }>
                                                                 Home
                                                         </NavLink></li>
+                           
                                                         <li> <NavLink className="trans" to={`/order` }>
                                                                 Order
                                                         </NavLink></li>
@@ -35,7 +36,7 @@ function Header({ user, onLogout, cart}) {
                                                         <li> <NavLink className="trans" to={`/MyOrders` }>
                                                                 MyOrders
                                                         </NavLink></li>
-                                                    
+               
                                                         {user ? (
     <>
                         <li><a href="index.html">Welcome {user.username}!</a></li>

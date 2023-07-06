@@ -1,8 +1,7 @@
-import React, { useState  } from 'react'
 
+import React, { useState  } from 'react'
 function Main({foods , user, updateCart}) {
     const [cartItems, setCartItems] = useState([]);
-
     const calculateTotalPrice = () => {
       let totalPrice = 0;
       cartItems.forEach((item) => {
@@ -17,7 +16,6 @@ function Main({foods , user, updateCart}) {
     const handleAddToCart = (food) => {
       setCartItems((prevCartItems) => [...prevCartItems, food]);
     };
-  
     const handleSubmitOrder = () => {
         // Create the order object
         const order = {
@@ -25,7 +23,6 @@ function Main({foods , user, updateCart}) {
           quantity: cartItems.length,
           price: calculateTotalPrice(),
         };
-      
         // Send a POST request to create the order
         fetch('/orders', {
           method: 'POST',
@@ -38,7 +35,6 @@ function Main({foods , user, updateCart}) {
           .then((data) => {
             // Handle the response or perform any necessary actions
             console.log(data);
-            
             // Save individual order items
             const orderId = data.id; // Assuming the response contains the created order ID
             const orderItems = cartItems.map((item) => ({
@@ -47,7 +43,6 @@ function Main({foods , user, updateCart}) {
               quantity: 1, // You can adjust the quantity as needed
               price: item.price,
             }));
-      
             // Send a POST request to create the order items
             fetch('/orderitems', {
               method: 'POST',
@@ -70,13 +65,9 @@ function Main({foods , user, updateCart}) {
             // Handle the error
             console.error(error);
           });
-      
         // Clear the cart items after submitting the order
         setCartItems([]);
       };
-      
-      
-  
   return (
    <>
          <div className="hwork">
@@ -110,17 +101,8 @@ function Main({foods , user, updateCart}) {
                                 <p className="desc">Choose from over 30 craveable toppings to make your perfect Food.
                                     <br/> Don’t love what you ordered? Let us know. We’re all about second chances.</p>
                                 <div className="p_card">
-                               
-                               
-
-
-                               
                                     <div className="row">
-                                       
-                                       
                                {/* Populate Food Data */}
-                                       
-                                       
                                {foods.map((food) => (
             <div key={food.id} className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <ul>
@@ -147,10 +129,6 @@ function Main({foods , user, updateCart}) {
               </ul>
             </div>
           ))}
-
-
-
-                          
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +137,6 @@ function Main({foods , user, updateCart}) {
                 </div>
             </div>
         </section>
-
 {/* add cart form */}
 {cartItems.length > 0 && (
           <section>
@@ -219,5 +196,4 @@ function Main({foods , user, updateCart}) {
    </>
   )
 }
-
 export default Main
