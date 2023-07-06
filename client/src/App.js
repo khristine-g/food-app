@@ -41,8 +41,6 @@ function App() {
     });
     setFoods(updatedfood);
   }
-
-
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -71,6 +69,7 @@ function App() {
 
           {/* <Route path="/admin" element={<Admin user ={user}  foods ={foods} onFoodDelete={handleDeleteFood}
         onUpdateFood={handleUpdateFood}/>} /> */}
+
         </Routes>
         <Footer />
       </div>
