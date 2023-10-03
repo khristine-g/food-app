@@ -83,3 +83,4 @@
     t.datetime "updated_at", precision: 6, null: false
   end
 
+# food-app
