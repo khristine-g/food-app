@@ -4,7 +4,7 @@
 ## License Free.
 ## copyright Free Software.
 
-## Authors Mathew Kipkoech , Charity Joseph, Meshack Korir and Denis Kamau
+
 
 ## Project Descrition
   The app is designed for food stores that want to online.a user can only access the services when loggen in. once logged in he/she can order food and view his/her orders.Admin can view all orders add foods or delete foods.
